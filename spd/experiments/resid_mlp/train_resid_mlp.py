@@ -255,88 +255,119 @@ def run_train(config: ResidMLPTrainConfig, device: str) -> Float[Tensor, ""]:
     return final_losses
 
 
-# Replace the bottom section of train_resid_mlp.py with this:
-
 if __name__ == "__main__":
     import sys
     
     device = "cuda" if torch.cuda.is_available() else "cpu"
     
-    # Get model type from command line argument
-    if len(sys.argv) > 1:
-        model_type = sys.argv[1]
+    # Get model type from command line (default to 1)
+    model_type = sys.argv[1] if len(sys.argv) > 1 else "1"
+    
+    # Switch between your existing configs based on argument
+    if model_type == "1":
+        # 1 layer - your original config
+        config = ResidMLPTrainConfig(
+            wandb_project="spd",
+            seed=0,
+            resid_mlp_model_config=ResidMLPModelConfig(
+                n_features=100,  # 1 layer
+                d_embed=1000,
+                d_mlp=50,  # 1 layer
+                n_layers=1,  # 1 layer
+                act_fn_name="relu",
+                in_bias=False,
+                out_bias=False,
+            ),
+            label_fn_seed=0,
+            label_type="act_plus_resid",
+            loss_type="readoff",
+            use_trivial_label_coeffs=True,
+            feature_probability=0.01,
+            # synced_inputs=[[0, 1], [2, 3]], # synced inputs
+            importance_val=1,
+            data_generation_type="at_least_zero_active",
+            batch_size=2048,
+            steps=1000,  # 1 layer
+            print_freq=100,
+            lr=3e-3,
+            lr_schedule="cosine",
+            fixed_random_embedding=True,
+            fixed_identity_embedding=False,
+            n_batches_final_losses=10,
+        )
+    
+    elif model_type == "2":
+        # 2 layers - your commented config uncommented
+        config = ResidMLPTrainConfig(
+            wandb_project="spd",
+            seed=0,
+            resid_mlp_model_config=ResidMLPModelConfig(
+                n_features=100, # 2 layers
+                d_embed=1000,
+                d_mlp=25, # 2 layers
+                n_layers=2, # 2 layers
+                act_fn_name="relu",
+                in_bias=False,
+                out_bias=False,
+            ),
+            label_fn_seed=0,
+            label_type="act_plus_resid",
+            loss_type="readoff",
+            use_trivial_label_coeffs=True,
+            feature_probability=0.01,
+            # synced_inputs=[[0, 1], [2, 3]], # synced inputs
+            importance_val=1,
+            data_generation_type="at_least_zero_active",
+            batch_size=2048,
+            steps=1000, # 2 layers
+            print_freq=100,
+            lr=3e-3,
+            lr_schedule="cosine",
+            fixed_random_embedding=True,
+            fixed_identity_embedding=False,
+            n_batches_final_losses=10,
+        )
+    
+    elif model_type == "3":
+        # 3 layers - your commented config uncommented
+        config = ResidMLPTrainConfig(
+            wandb_project="spd",
+            seed=0,
+            resid_mlp_model_config=ResidMLPModelConfig(
+                n_features=102,  # 3 layers
+                d_embed=1000,
+                d_mlp=17,  # 3 layers
+                n_layers=3,  # 3 layers
+                act_fn_name="relu",
+                in_bias=False,
+                out_bias=False,
+            ),
+            label_fn_seed=0,
+            label_type="act_plus_resid",
+            loss_type="readoff",
+            use_trivial_label_coeffs=True,
+            feature_probability=0.01,
+            # synced_inputs=[[0, 1], [2, 3]], # synced inputs
+            importance_val=1,
+            data_generation_type="at_least_zero_active",
+            batch_size=2048,
+            steps=10_000,  # 3 layers
+            print_freq=100,
+            lr=3e-3,
+            lr_schedule="cosine",
+            fixed_random_embedding=True,
+            fixed_identity_embedding=False,
+            n_batches_final_losses=10,
+        )
+    
     else:
-        model_type = "1"  # default to 1-layer
-    
-    # Define configurations for each model type 
-    configs = {
-        "1": {
-            "n_features": 100,
-            "d_mlp": 50,
-            "n_layers": 1,
-            "steps": 1000,
-            "lr": 3e-3,
-            "print_freq": 100
-        },
-        "2": {
-            "n_features": 100,  # 2 layers
-            "d_mlp": 25,        # 2 layers
-            "n_layers": 2,
-            "steps": 1000,      # 2 layers
-            "lr": 3e-3,         # 2 layers
-            "print_freq": 100
-        },
-        "3": {
-            "n_features": 102,   # 3 layers
-            "d_mlp": 17,        # 3 layers
-            "n_layers": 3,
-            "steps": 10000,     # 3 layers
-            "lr": 3e-3,         # 3 layers
-            "print_freq": 100
-        }
-    }
-    
-    if model_type not in configs:
         print(f"Invalid model type: {model_type}")
         print("Usage: python train_resid_mlp.py [1|2|3]")
-        print("  1 = 1-layer model (n_features=100, d_mlp=50, steps=1000)")
-        print("  2 = 2-layer model (n_features=100, d_mlp=25, steps=1000)")
-        print("  3 = 3-layer model (n_features=102, d_mlp=17, steps=10000)")
-        sys.exit(1)
-    
-    cfg = configs[model_type]
-    print(f"Training {model_type}-layer ResidMLP:")
-    print(f"  n_features={cfg['n_features']}, d_mlp={cfg['d_mlp']}, steps={cfg['steps']}")
-    
-    config = ResidMLPTrainConfig(
-        wandb_project="spd",  
-        seed=0,
-        resid_mlp_model_config=ResidMLPModelConfig(
-            n_features=cfg["n_features"],
-            d_embed=1000,
-            d_mlp=cfg["d_mlp"],
-            n_layers=cfg["n_layers"],
-            act_fn_name="relu",
-            in_bias=False,
-            out_bias=False,
-        ),
-        label_fn_seed=0,
-        label_type="act_plus_resid",
-        loss_type="readoff",
-        use_trivial_label_coeffs=True,
-        feature_probability=0.01,
-        # synced_inputs=[[0, 1], [2, 3]], # synced inputs 
-        importance_val=1,
-        data_generation_type="at_least_zero_active",
-        batch_size=2048,
-        steps=cfg["steps"],
-        print_freq=cfg["print_freq"],
-        lr=cfg["lr"],
-        lr_schedule="cosine",  
-        fixed_random_embedding=True,
-        fixed_identity_embedding=False,
-        n_batches_final_losses=10,
-    )
+        print("  1 = 1-layer model")
+        print("  2 = 2-layer model") 
+        print("  3 = 3-layer model")
+        exit(1)
 
+    print(f"Training {model_type}-layer ResidMLP...")
     set_seed(config.seed)
-    final_losses = run_train(config, device)
+    run_train(config, device)
