@@ -254,7 +254,6 @@ def run_train(config: ResidMLPTrainConfig, device: str) -> Float[Tensor, ""]:
     )
     return final_losses
 
-
 if __name__ == "__main__":
     import sys
     
@@ -267,9 +266,9 @@ if __name__ == "__main__":
     if model_type == "1":
         # 1 layer - your original config
         config = ResidMLPTrainConfig(
-            wandb_project="spd",
+            wandb_project="spd-train-resid-mlp",
             seed=0,
-            resid_mlp_model_config=ResidMLPModelConfig(
+            resid_mlp_config=ResidualMLPConfig(
                 n_features=100,  # 1 layer
                 d_embed=1000,
                 d_mlp=50,  # 1 layer
@@ -299,9 +298,9 @@ if __name__ == "__main__":
     elif model_type == "2":
         # 2 layers - your commented config uncommented
         config = ResidMLPTrainConfig(
-            wandb_project="spd",
+            wandb_project="spd-train-resid-mlp",
             seed=0,
-            resid_mlp_model_config=ResidMLPModelConfig(
+            resid_mlp_config=ResidualMLPConfig(
                 n_features=100, # 2 layers
                 d_embed=1000,
                 d_mlp=25, # 2 layers
@@ -331,9 +330,9 @@ if __name__ == "__main__":
     elif model_type == "3":
         # 3 layers - your commented config uncommented
         config = ResidMLPTrainConfig(
-            wandb_project="spd",
+            wandb_project="spd-train-resid-mlp",
             seed=0,
-            resid_mlp_model_config=ResidMLPModelConfig(
+            resid_mlp_config=ResidualMLPConfig(
                 n_features=102,  # 3 layers
                 d_embed=1000,
                 d_mlp=17,  # 3 layers
@@ -363,9 +362,9 @@ if __name__ == "__main__":
     else:
         print(f"Invalid model type: {model_type}")
         print("Usage: python train_resid_mlp.py [1|2|3]")
-        print("  1 = 1-layer model")
-        print("  2 = 2-layer model") 
-        print("  3 = 3-layer model")
+        print("  1 = 1-layer model (n_features=100, d_mlp=50, steps=1000)")
+        print("  2 = 2-layer model (n_features=100, d_mlp=25, steps=1000)")
+        print("  3 = 3-layer model (n_features=102, d_mlp=17, steps=10000)")
         exit(1)
 
     print(f"Training {model_type}-layer ResidMLP...")
