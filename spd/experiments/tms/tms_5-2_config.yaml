@@ -1,3 +1,6 @@
+# CORRECTED TMS 5-2 CONFIG
+# The issue is in the target_module_patterns section
+
 # TMS 5-2
 # --- WandB ---
 wandb_project: spd-tms
@@ -10,8 +13,8 @@ C: 20
 n_mask_samples: 1
 n_ci_mlp_neurons: 16
 # n_ci_mlp_neurons: 0
-# target_module_patterns: ["linear1", "linear2"]
-target_module_patterns: ["linear1", "linear2", "hidden_layers.0"]
+target_module_patterns: ["linear1", "linear2"]  
+# target_module_patterns: ["linear1", "linear2", "hidden_layers.0"]  
 
 # --- Loss Coefficients ---
 faithfulness_coeff: 1.0
@@ -38,8 +41,7 @@ save_freq: null
 
 # --- Pretrained model info ---
 pretrained_model_class: "spd.experiments.tms.models.TMSModel"
-# pretrained_model_path: "wandb:spd-train-tms/runs/bohlithe"
-pretrained_model_path: "wandb:spd-train-tms/runs/2pmvzbbe" # 1 hidden w/fixed identity
+pretrained_model_path: "wandb:spd-train-tms/runs/bohlithe"
 
 # --- Task Specific ---
 task_config:
