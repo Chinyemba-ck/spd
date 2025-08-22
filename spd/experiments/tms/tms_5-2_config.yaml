@@ -1,6 +1,3 @@
-# CORRECTED TMS 5-2 CONFIG
-# The issue is in the target_module_patterns section
-
 # TMS 5-2
 # --- WandB ---
 wandb_project: spd-tms
