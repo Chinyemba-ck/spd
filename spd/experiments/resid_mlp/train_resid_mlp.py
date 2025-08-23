@@ -264,7 +264,7 @@ if __name__ == "__main__":
     
     # Switch between your existing configs based on argument
     if model_type == "1":
-        # 1 layer - your original config
+        # 1 layer 
         config = ResidMLPTrainConfig(
             wandb_project="spd-train-resid-mlp",
             seed=0,
@@ -296,7 +296,7 @@ if __name__ == "__main__":
         )
     
     elif model_type == "2":
-        # 2 layers - your commented config uncommented
+        # 2 layers 
         config = ResidMLPTrainConfig(
             wandb_project="spd-train-resid-mlp",
             seed=0,
@@ -328,7 +328,7 @@ if __name__ == "__main__":
         )
     
     elif model_type == "3":
-        # 3 layers - your commented config uncommented
+        # 3 layers 
         config = ResidMLPTrainConfig(
             wandb_project="spd-train-resid-mlp",
             seed=0,
