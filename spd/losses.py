@@ -8,6 +8,7 @@ from jaxtyping import Float, Int
 from torch import Tensor
 
 from spd.configs import Config
+from spd.geometric_metrics import geometric_similarity_loss
 from spd.models.component_model import ComponentModel
 from spd.models.component_utils import calc_stochastic_masks
 from spd.models.components import EmbeddingComponent, LinearComponent
@@ -430,5 +431,19 @@ def calculate_losses(
         )
         total_loss += config.embedding_recon_coeff * embedding_recon_loss
         loss_terms["loss/embedding_recon"] = embedding_recon_loss.item()
+
+    # Geometric similarity loss
+    if config.geometric_similarity_coeff is not None:
+        geom_sim_loss = geometric_similarity_loss(
+            components=components,
+            target_model=model.model,
+            causal_importances=causal_importances,
+            use_jl_projection=config.use_common_dimension_projection,
+            jl_eps=config.jl_projection_eps,
+            jl_seed=config.jl_projection_seed,
+            device=device,
+        )
+        total_loss += config.geometric_similarity_coeff * geom_sim_loss
+        loss_terms["loss/geometric_similarity"] = geom_sim_loss.item()
 
     return total_loss, loss_terms
