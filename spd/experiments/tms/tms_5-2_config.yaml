@@ -1,6 +1,6 @@
 # TMS 5-2
 # --- WandB ---
-wandb_project: spd-tms
+wandb_project: seane-spd-tms
 wandb_run_name: null
 wandb_run_name_prefix: ""
 
@@ -23,6 +23,12 @@ importance_minimality_coeff: 3e-3
 pnorm: 1.0
 output_loss_type: mse
 
+# --- Geometric Metric Loss ---
+geometric_similarity_coeff: 0.1
+use_common_dimension_projection: true
+jl_projection_eps: 0.2
+jl_projection_seed: 123
+
 # --- Training ---
 batch_size: 4096
 steps: 40_000
@@ -38,7 +44,7 @@ save_freq: null
 
 # --- Pretrained model info ---
 pretrained_model_class: "spd.experiments.tms.models.TMSModel"
-pretrained_model_path: "wandb:spd-train-tms/runs/bohlithe"
+pretrained_model_path: "wandb:goodfire/spd-train-tms/runs/bohlithe"
 
 # --- Task Specific ---
 task_config:

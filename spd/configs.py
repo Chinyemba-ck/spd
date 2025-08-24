@@ -160,6 +160,25 @@ class Config(BaseModel):
         default=False,
         description="If True, apply embedding recon jointly to embed & unembed matrices",
     )
+    
+    # --- Geometric Metric Loss ---
+    geometric_similarity_coeff: NonNegativeFloat | None = Field(
+        default=None,
+        description="Coefficient for geometric similarity loss in common effect space",
+    )
+    use_common_dimension_projection: bool = Field(
+        default=False,
+        description="Whether to use Johnson-Lindenstrauss projection for metric comparability",
+    )
+    jl_projection_eps: float = Field(
+        default=0.2,
+        description="JL projection distortion parameter (smaller = less distortion, higher dimension)",
+    )
+    jl_projection_seed: int = Field(
+        default=123,
+        description="Random seed for reproducible JL projection",
+    )
+    
     pnorm: PositiveFloat = Field(
         ...,
         description="The p-value used for the importance minimality loss",
